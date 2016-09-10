@@ -63,7 +63,7 @@ if (process.env.DEV) {
 ////////////////////////////////////////////////////////////////////////////////
 
 var localStrat = require('./config/local.passport.js');
-var githubStra = require('./config/github.passport.js');
+var githubStrat = require('./config/github.passport.js');
 
 app.use(session({
   secret: process.env.SECRET,
@@ -87,10 +87,8 @@ app.use(passport.session());
 
 // VIEWS ///////////////////////////////////////////////////////////////////////
 var routes = require('./routes/index');
-var users = require('./routes/users');
 
 app.use('/', routes);
-app.use('/users', users);
 
 // ERRORS //////////////////////////////////////////////////////////////////////
 
