@@ -2,9 +2,9 @@ var mongoose = require('mongoose');
 
 var userSchema = mongoose.Schema({
   password: {
-    type: String
-    require: true,
-  }
+    type: String,
+    required: true,
+  },
   passwordResetToken: {
     type: String
   },
@@ -12,19 +12,19 @@ var userSchema = mongoose.Schema({
     type: Date
   },
   email: {
-    type: String
+    type: String,
     required: true,
     unique: true
   },
   emailConfirmed: {
-    type: boolean,
+    type: Boolean,
     default: false
   },
   emailConfirmToken: {
     type: String
   },
   locked: {
-    type: boolean,
+    type: Boolean,
     required: true,
     default: false
   }
