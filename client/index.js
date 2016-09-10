@@ -2,20 +2,69 @@
 // IMPORTS /////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 
-var React = require('react');
-var ReactDOM = require('react-dom');
+// CORE ////////////////////////////////////////////////////////////////////////
 
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { createStore, combineReducers } from 'redux';
+import { Provider } from 'react-redux';
+import reducers from './reducers';
+
+// ROUTER //////////////////////////////////////////////////////////////////////
+
+import { Router, Route, IndexRoute, browserHistory } from 'react-router';
+import { syncHistoryWithStore, routerReducer } from 'react-router-redux';
+
+// PAGES ///////////////////////////////////////////////////////////////////////
+
+import { Home } from './pages';
 
 ////////////////////////////////////////////////////////////////////////////////
 // CORE ////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 
-var App = React.createClass({
-  render: () => {
+// Add the reducer to your store on the `routing` key
+const store = createStore(
+  combineReducers({
+    ...reducers,
+    routing: routerReducer
+  })
+);
+
+// Create an enhanced history that syncs navigation events with the store
+const history = syncHistoryWithStore(browserHistory, store)
+
+class App extends React.Component{
+  contextTypes: {
+    router: React.propTypes.func,
+    state: React.propTypes.object
+  }
+  constructor() {
+    super()
+    
+    this.state = store.getState();
+  }
+  render() {
     return (
-      <h2>Hello React!</h2>
+      <div>
+        <h1>Welcome!</h1>
+        {this.props.children}
+      </div>
     );
   }
-});
+};
 
-ReactDOM.render(<App />, document.getElementById('root'));
+////////////////////////////////////////////////////////////////////////////////
+// CORE ////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+
+ReactDOM.render(
+  <Provider store={store}>
+    <Router history={history}>
+      <Route path="/" component={App}>
+        <IndexRoute component={Home} />
+      </Route>
+    </Router>
+  </Provider>,
+  document.getElementById('root')
+)
