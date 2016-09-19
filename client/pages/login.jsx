@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 
 import { actions } from '../actions';
 
-const Home = React.createClass({
+const Login = React.createClass({
   getInitialState: function() {
     return {
       username: "",
@@ -19,35 +19,34 @@ const Home = React.createClass({
   },
   
   onChange: function(name, evt) {
-    var newState = {}
+    var newState = {};
     newState[name] = evt.target.value;
     this.setState(newState);
   },
   
-  doLogin: function(evt) {
-    evt.preventDefault();
+  doLogin: function(e) {
+    console.log("evt", e);
+    e.preventDefault();
     console.log("Logging in...");
     
     // this.props.dispatch
   },
   
   render: function() {
-    // console.log("component upon render", this);
-    // console.log("state upon render", this.state);
-    // console.log("dispatch", this.props.dispatch);
+    console.log("state upon render", this.state);
     return (
       <div>
         <h1>Login</h1>
         <form onSubmit={this.doLogin}>
           <label>
             Username
-            <input type="text" value={this.state.username} onChange={this.onChange.bind(this, 'username')} />
+            <input type="text" value={this.state.username} name="username" onChange={this.onChange.bind(this, 'username')} />
           </label>
           <label>
-            Username
-            <input type="password" value={this.state.password} onChange={this.onChange.bind(this, 'password')} />
+            Password
+            <input type="password" value={this.state.password} name="password" onChange={this.onChange.bind(this, 'password')} />
           </label>
-          <button>Login</button>
+          <button onClick={this.doLogin}>Login</button>
         </form>
       </div>
     );
@@ -58,4 +57,5 @@ function mapStateToProps(reducerStates) {
   return {}
 }
 
-module.exports = connect(mapStateToProps)(Home);
+// module.exports = connect(mapStateToProps)(Login);
+module.exports = Login;
