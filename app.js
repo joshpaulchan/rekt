@@ -114,22 +114,23 @@ app.use('/', (req, res, next) => {
   // the original request, including the query string.
   match({ routes: routes.client, location: req.url }, (error, redirectLocation, renderProps) => {
     if (error) {
-      next(error);
+      return next(error);
     } else if (redirectLocation) {
-      res.redirect(302, redirectLocation.pathname + redirectLocation.search)
+      return res.redirect(302, redirectLocation.pathname + redirectLocation.search)
     } else if (renderProps) {
       // You can also check renderProps.components or renderProps.routes for
       // your "not found" component or route respectively, and send a 404 as
       // below, if you're using a catch-all route.
-      res.status(200).send(renderToString(
+      return res.render('index', {
+        react: renderToString(
         <Provider store={store}>
           <RouterContext {...renderProps} />
         </Provider>
-      ))
+      )})
     } else {
       var err = new Error('Not Found');
       err.status = 404;
-      next(err)
+      return next(err)
     }
   })
 })
