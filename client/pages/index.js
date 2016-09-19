@@ -1,3 +1,4 @@
 module.exports = {
-  Home : require('./home.jsx')
+  App : require('./app.jsx'),
+  Home : require('./home.jsx'),
 }

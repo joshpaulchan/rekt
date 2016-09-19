@@ -32,6 +32,17 @@ var mongoose = require('mongoose');
 var MongoStore = require('connect-mongo')(session);
 mongoose.connect(process.env.MONGODB_URI);
 
+// ROUTES //////////////////////////////////////////////////////////////////////
+
+var React = require('react');
+var renderToString = require('react-dom/server').renderToString;
+import  { match, RouterContext } from 'react-router';
+var routes = require('./routes');
+import { createStore, combineReducers } from 'redux';
+import { Provider } from 'react-redux';
+import { routerReducer } from 'react-router-redux';
+import reducers from './client/reducers';
+
 ////////////////////////////////////////////////////////////////////////////////
 // CORE ////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
@@ -53,7 +64,10 @@ if (process.env.DEV) {
   app.use(webpackMiddleware(compiler, {
     publicPath: config.output.publicPath,
     hot: true,
-    historyApiFallback: true
+    historyApiFallback: true,
+    stats: {
+      chunks: false
+    }
   }));
   app.use(require('webpack-hot-middleware')(compiler));
 }
@@ -84,21 +98,43 @@ app.use(passport.session());
 
 // API /////////////////////////////////////////////////////////////////////////
 
+app.use('/api', routes.api.auth);
 
 // VIEWS ///////////////////////////////////////////////////////////////////////
-var routes = require('./routes/index');
 
-app.use('/', routes);
+const store = createStore(
+  combineReducers({
+    ...reducers,
+    routing: routerReducer
+  })
+);
+
+app.use('/', (req, res, next) => {
+  // Note that req.url here should be the full URL path from
+  // the original request, including the query string.
+  match({ routes: routes.client, location: req.url }, (error, redirectLocation, renderProps) => {
+    if (error) {
+      next(error);
+    } else if (redirectLocation) {
+      res.redirect(302, redirectLocation.pathname + redirectLocation.search)
+    } else if (renderProps) {
+      // You can also check renderProps.components or renderProps.routes for
+      // your "not found" component or route respectively, and send a 404 as
+      // below, if you're using a catch-all route.
+      res.status(200).send(renderToString(
+        <Provider store={store}>
+          <RouterContext {...renderProps} />
+        </Provider>
+      ))
+    } else {
+      var err = new Error('Not Found');
+      err.status = 404;
+      next(err)
+    }
+  })
+})
 
 // ERRORS //////////////////////////////////////////////////////////////////////
-
-// catch 404 and forward to error handler
-app.use(function(req, res, next) {
-  var err = new Error('Not Found');
-  err.status = 404;
-  next(err);
-});
-
 
 // development error handler
 // will print stacktrace
