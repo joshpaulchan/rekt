@@ -27,8 +27,6 @@ const Home = React.createClass({
   },
   
   render: function() {
-    console.log("component upon render", this);
-    console.log("state upon render", this.state);
     // console.log("dispatch", this.props.dispatch);
     return (
       <div>
