@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router';
 import { connect } from 'react-redux';
 
 import { actions } from '../actions';
@@ -40,14 +41,15 @@ const Login = React.createClass({
         <form onSubmit={this.doLogin}>
           <label>
             Username
-            <input type="text" value={this.state.username} name="username" onChange={this.onChange.bind(this, 'username')} />
+            <input type="text" value={this.state.username} onChange={this.onChange.bind(this, 'username')} />
           </label>
           <label>
             Password
-            <input type="password" value={this.state.password} name="password" onChange={this.onChange.bind(this, 'password')} />
+            <input type="password" value={this.state.password} onChange={this.onChange.bind(this, 'password')} />
           </label>
-          <button onClick={this.doLogin}>Login</button>
+          <button>Login</button>
         </form>
+        <Link to='/register'>Register</Link>
       </div>
     );
   }

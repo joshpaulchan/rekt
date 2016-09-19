@@ -15,5 +15,8 @@ module.exports = {
   }, {
     path: 'login',
     component: pages.Login
+  }, {
+    path: 'register',
+    component: pages.Register
   }]
 }
