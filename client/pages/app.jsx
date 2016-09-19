@@ -2,7 +2,7 @@ import React from "react";
 
 const App = React.createClass({
   contextTypes: {
-    router: React.PropTypes.func,
+    router: React.PropTypes.object,
     state: React.PropTypes.object
   },
   getInitialState: function() {
@@ -11,7 +11,6 @@ const App = React.createClass({
   render: function() {
     return (
       <div>
-        <h1>Welcome!</h1>
         {this.props.children}
       </div>
     );
