@@ -12,12 +12,12 @@ import reducers from './reducers';
 
 // ROUTER //////////////////////////////////////////////////////////////////////
 
-import { Router, Route, IndexRoute, browserHistory } from 'react-router';
+import { Router, browserHistory } from 'react-router';
 import { syncHistoryWithStore, routerReducer } from 'react-router-redux';
 
 // PAGES ///////////////////////////////////////////////////////////////////////
 
-import { Home } from './pages';
+import pages from './pages';
 
 ////////////////////////////////////////////////////////////////////////////////
 // CORE ////////////////////////////////////////////////////////////////////////
@@ -34,37 +34,13 @@ const store = createStore(
 // Create an enhanced history that syncs navigation events with the store
 const history = syncHistoryWithStore(browserHistory, store)
 
-class App extends React.Component{
-  contextTypes: {
-    router: React.propTypes.func,
-    state: React.propTypes.object
-  }
-  constructor() {
-    super()
-    
-    this.state = store.getState();
-  }
-  render() {
-    return (
-      <div>
-        <h1>Welcome!</h1>
-        {this.props.children}
-      </div>
-    );
-  }
-};
-
 ////////////////////////////////////////////////////////////////////////////////
 // CORE ////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 
-ReactDOM.render(
-  <Provider store={store}>
-    <Router history={history}>
-      <Route path="/" component={App}>
-        <IndexRoute component={Home} />
-      </Route>
-    </Router>
-  </Provider>,
-  document.getElementById('root')
-)
+match({ history, routes }, (error, redirectLocation, renderProps) => {
+  ReactDOM.render(
+      <Router history={history} {...renderProps} />
+    , document.body
+  )
+})
