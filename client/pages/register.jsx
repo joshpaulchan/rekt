@@ -10,6 +10,8 @@ const Register = React.createClass({
       username: "",
       password: "",
       passwordRepeat: "",
+      error: false,
+      errorMsg: ""
     }
   },
   
@@ -26,18 +28,40 @@ const Register = React.createClass({
     this.setState(newState);
   },
   
+  isNotEmpty: function(field) {
+    return !(field[i].trimLeft().length === 0)
+  },
+  
+  validateFields: function() {
+    // TODO: check if fields are empty
+    // TODO: check if passwords match
+  },  
+  
   doRegister: function(e) {
     console.log("evt", e);
     e.preventDefault();
-    console.log("Logging in...");
+    var validity = this.validateFields();
+    if (validity.true) {
+      console.log("Logging in...");
+    } else {
+      this.setState({
+        error: false,
+        errorMsg: validity.error
+      });
+    }
     
   },
   
   render: function() {
     console.log("state upon render", this.state);
+    var error;
+    if (this.state.error) {
+      error = <span className="error">{this.state.errorMsg}</span>
+    }
     return (
       <div>
-        <h1>Login</h1>
+        <h1>Register</h1>
+        { error }
         <form onSubmit={this.doRegister}>
           <label>
             Username
