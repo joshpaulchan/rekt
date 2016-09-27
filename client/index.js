@@ -17,7 +17,7 @@ import { syncHistoryWithStore, routerReducer } from 'react-router-redux';
 
 // PAGES ///////////////////////////////////////////////////////////////////////
 
-var routes = require('../routes/client');
+import routes from '../routes/client';
 
 ////////////////////////////////////////////////////////////////////////////////
 // CORE ////////////////////////////////////////////////////////////////////////
@@ -39,5 +39,8 @@ const history = syncHistoryWithStore(browserHistory, store)
 ////////////////////////////////////////////////////////////////////////////////
 
 match({ history, routes }, (error, redirectLocation, renderProps) => {
-  ReactDOM.render(<Router {...renderProps} />, document.getElementById('root'));
+  ReactDOM.render(
+    <Provider store={store}>
+      <Router {...renderProps} />
+    </Provider>, document.getElementById('root'));
 })
