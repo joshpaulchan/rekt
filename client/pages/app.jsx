@@ -1,5 +1,6 @@
 import React from "react";
-import { connect } from "react-redux"
+import { connect } from "react-redux";
+import { actions } from "../actions";
 import _ from "underscore";
 
 const App = React.createClass({
@@ -10,12 +11,14 @@ const App = React.createClass({
   childContextTypes: {
     getUser: React.PropTypes.func,
     isLoggedIn: React.PropTypes.func,
+    logout: React.PropTypes.func,
   },
   
   getChildContext: function() {
     return {
       getUser: this.getUser,
       isLoggedIn: this.isLoggedIn,
+      logout: this.logout,
     }
   },
   
@@ -45,15 +48,36 @@ const App = React.createClass({
     return this.state.user != null;
   },
   
+  // `logout`
+  // 
+  // This function logs the user out and unsets the global user.
+  // 
+  // @params: null
+  // @returns: null
+  logout: function() {
+    this.props.dispatch(actions.unsetUser());
+  },
+  
   componentWillReceiveProps: function(newProps) {
     const newState = _.pick(newProps, ["user"]);
     this.setState(newState);
   },
   
   render: function() {
+    // FIXME: remove this
+    var authenticatedPanel;
+    if (this.isLoggedIn() === true) {
+      authenticatedPanel = (
+        <div>
+          <span>Hello, {this.state.user.username}!</span>
+          <button onClick={this.logout}>Log out</button>
+        </div>
+      );
+    }
     return (
       <div>
-        {this.props.children}
+        { authenticatedPanel }
+        { this.props.children }
       </div>
     );
   }

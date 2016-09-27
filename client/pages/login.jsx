@@ -22,7 +22,9 @@ const Login = React.createClass({
     e.preventDefault();
     console.log("Logging in...");
       
-    this.props.dispatch(actions.setUser(this.state.username));
+    this.props.dispatch(actions.setUser({
+      username: this.state.username
+    }));
   },
   
   render: function() {
