@@ -12,13 +12,6 @@ const Login = React.createClass({
     }
   },
   
-  componentWillReceiveProps(newProps) {
-    console.log("[component] updating props");
-    this.setState({
-      count: newProps.count
-    });
-  },
-  
   onChange: function(name, evt) {
     var newState = {};
     newState[name] = evt.target.value;
@@ -26,11 +19,10 @@ const Login = React.createClass({
   },
   
   doLogin: function(e) {
-    console.log("evt", e);
     e.preventDefault();
     console.log("Logging in...");
-    
-    // this.props.dispatch
+      
+    this.props.dispatch(actions.setUser(this.state.username));
   },
   
   render: function() {
@@ -55,9 +47,4 @@ const Login = React.createClass({
   }
 });
 
-function mapStateToProps(reducerStates) {
-  return {}
-}
-
-// module.exports = connect(mapStateToProps)(Login);
-module.exports = Login;
+module.exports = connect()(Login);
