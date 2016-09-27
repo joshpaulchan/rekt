@@ -6,8 +6,25 @@
 
 const LOG_IN = '@@auth/SUBMIT_LOGIN_FORM';
 const ADD = '@@test/ADD';
+const SET_USER = '@@app/SET_USER';
 
 // ACTIONS /////////////////////////////////////////////////////////////////////
+
+// `setUser`
+// 
+// This function sets the current globallogged-in user to the application, if
+// any
+// 
+// @params: user<Object>: the user object that has just logged in
+// @returns: null
+function setUser(user) {
+  // TODO: replace with a dispatch
+  // this.setState({ user });
+  return {
+    type: SET_USER,
+    user
+  }
+}
 
 function logIn(data) {
   return {
@@ -31,9 +48,11 @@ module.exports = {
   types: {
     LOG_IN,
     ADD,
+    SET_USER
   },
   actions: {
     logIn,
-    add
+    add,
+    setUser
   }
 }
