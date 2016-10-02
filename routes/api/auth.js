@@ -1,21 +1,52 @@
 var router = require('express').Router();
-const _ = require('underscore');
-const bcrypt = require('bcrypt');
-const models = require('../../models');
+var models = require('../../models');
 
 module.exports = function(passport) {
   
-  // /api/register
-  // 
-  // This route is responsible for creating a new user object
-  router.post('/register', (req, res) => {
-    var userData = _.pick(req.body, ['username', 'password']);
-    var u = new models.User(userData).save(function() {
+  router.get('/confirm-email', (req, res, next) => {
+    var emailConfirmToken = req.query.token;
+    
+    // if token is missing, return error
+    if (!emailConfirmToken) {
+      return res.status(500).json({
+        ok: false,
+        error: "Cannot confirm email if the 'token' query paramter is missing."
+      });
+    }
+    
+    models.User.findOne({ emailConfirmToken }, (err, u) {
+      // mongo retrieval error
+      if (err) {
+        return res.status(500).json({
+          ok: false,
+          error: err.toString()
+        });
+      }
+      // nobody with that confirm email token
+      if (!u) {
+        return res.status(400).json({
+          ok: false,
+          error: "No such user exists."
+        });
+      }
       
-    })
-  });
-  
-  reouter.get()
+      // confirm email for user
+      u.emailConfirmed = true;
+      u.save((err) => {
+        // mongo update error
+        if (err) {
+          return res.status(500).json({
+            ok: false,
+            error: err.toString()
+          });
+        }
+        // success
+        return res.json({
+          ok: true
+        });
+      });
+    });
+  })
     
   return router;
 }
