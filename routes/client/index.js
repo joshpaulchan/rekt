@@ -7,11 +7,8 @@ module.exports = {
     component: pages.Home
   },
   childRoutes: [{
-    path: 'a',
-    component: pages.Home
-  }, {
-    path: 'b',
-    component: pages.Home
+    path: 'confirm-email',
+    component: pages.EmailConfirmPage
   }, {
     path: 'login',
     component: pages.Login
