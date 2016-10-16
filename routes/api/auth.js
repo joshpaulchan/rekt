@@ -4,7 +4,7 @@ var _ = require('underscore');
 
 module.exports = function(passport) {
   
-  // `/confirm-email`
+  // GET `/confirm-email`
   // Confirms the user's email who's confirmToken matches the token passed in
   // via query params.
   // 
@@ -58,7 +58,7 @@ module.exports = function(passport) {
     });
   });
   
-  // `/login`
+  // POST `/login`
   // Logs in the user with the supplied username and password credentials in the
   // POST body.
   // 
@@ -87,7 +87,7 @@ module.exports = function(passport) {
     }
   });
   
-  // `/register`
+  // POST `/register`
   // Registers a potential user.
   // 
   // @pre: a potential user submitted login credentials
@@ -127,7 +127,7 @@ module.exports = function(passport) {
     });
   });
   
-  // `/login`
+  // POST `/logout`
   // Logs the currently logged-in out.
   // 
   // @pre: a potential user submitted login credentials
