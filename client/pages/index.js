@@ -3,4 +3,5 @@ module.exports = {
   Home : require('./home.jsx'),
   Login : require('./login.jsx'),
   Register : require('./register.jsx'),
+  EmailConfirmPage : require('./email-confirm.jsx'),
 }
